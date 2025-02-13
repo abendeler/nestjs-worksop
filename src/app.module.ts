@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { TasksModule } from './modules/tasks/tasks.module';
 import { environmentConfiguration } from './modules/configuration';
 
 @Module({
@@ -9,7 +8,6 @@ import { environmentConfiguration } from './modules/configuration';
       isGlobal: true,
       load: [environmentConfiguration],
     }),
-    TasksModule,
   ],
 })
 export class AppModule {}
