@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { TasksRepository } from './tasks.repository';
 import { CreateTaskRequest } from './types/events/create-task.request';
 import { Task } from './types/entities/task';
 import { TaskPaginationResponse } from './types/api/task-pagination.response.type';
 import { UpdateTaskRequest } from './types/events/update-task.request';
-import { ATasksService } from './types/providers/tasks.repository';
+import { TasksRepository } from './types/providers/tasks.repository';
 import { PaginationQueryParams } from './types/api/pagination-query-params.type';
 import { WithCreator } from './types/partials/with-creator.type';
+import { TasksService } from './types/providers/tasks.service';
+import { MutateTaskRequestParams } from './types/api/mutate-task-request-params.type';
 
 @Injectable()
-export class TasksService implements ATasksService {
+export class TasksServiceImplementation implements TasksService {
   constructor(private readonly tasksRepository: TasksRepository) {}
 
   public async getTasksByCreator({
@@ -34,5 +35,9 @@ export class TasksService implements ATasksService {
 
   public async markAsComplete(creator: string, id: string): Promise<Task> {
     return this.tasksRepository.markAsComplete(creator, id);
+  }
+
+  public async deleteTask(params: MutateTaskRequestParams): Promise<Task> {
+    return this.tasksRepository.deleteTask(params);
   }
 }

@@ -8,8 +8,8 @@ import {
   Controller,
   UseFilters,
   Query,
+  Delete,
 } from '@nestjs/common';
-import { TasksService } from './tasks.service';
 import { Task } from './types/entities/task';
 import { ApiTags } from '@nestjs/swagger';
 import { TaskNotFoundExceptionFilter } from './exceptions/task-not-found.exception.filter';
@@ -19,6 +19,7 @@ import { TasksPaginationResponseDto } from './dtos/pagination.model.dto';
 import { CreatorDto } from './dtos/creator.model.dto';
 import { CreatorAndIdDto } from './dtos/creator-and-id.model.dto';
 import { TaskRequestBodyDto } from './dtos/task-request-body.model.dto';
+import { TasksService } from './types/providers/tasks.service';
 
 @ApiTags('tasks')
 @Controller('tasks')
@@ -62,5 +63,12 @@ export class TasksController {
     @Param() { creator, id }: MutateTaskRequestParamsDto,
   ): Promise<Task> {
     return this.tasksService.markAsComplete(creator, id);
+  }
+
+  @Delete(':creator/:id')
+  public async deleteTask(
+    @Param() params: MutateTaskRequestParamsDto,
+  ): Promise<Task> {
+    return this.tasksService.deleteTask(params);
   }
 }
